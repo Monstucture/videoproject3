@@ -1,0 +1,13 @@
+<component name="ArtifactManager">
+  <artifact type="exploded-war" name="videoproject3:Web exploded">
+    <output-path>$PROJECT_DIR$/out/artifacts/videoproject3_Web_exploded</output-path>
+    <root id="root">
+      <element id="javaee-facet-resources" facet="videoproject3/web/webapp" />
+      <element id="directory" name="WEB-INF">
+        <element id="directory" name="classes">
+          <element id="module-output" name="videoproject3" />
+        </element>
+      </element>
+    </root>
+  </artifact>
+</component>

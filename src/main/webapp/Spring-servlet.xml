@@ -1,0 +1,76 @@
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:mvc="http://www.springframework.org/schema/mvc" 
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:tx="http://www.springframework.org/schema/tx"
+	xmlns:jpa="http://www.springframework.org/schema/data/jpa"
+	xsi:schemaLocation="
+		http://www.springframework.org/schema/data/jpa
+		http://www.springframework.org/schema/data/jpa/spring-jpa.xsd
+        http://www.springframework.org/schema/beans     
+        http://www.springframework.org/schema/beans/spring-beans.xsd
+        http://www.springframework.org/schema/mvc 
+        http://www.springframework.org/schema/mvc/spring-mvc.xsd
+        http://www.springframework.org/schema/context 
+        http://www.springframework.org/schema/context/spring-context.xsd
+        http://www.springframework.org/schema/tx 
+        http://www.springframework.org/schema/tx/spring-tx.xsd">
+ 
+ 	<jpa:repositories base-package="project.repository" />
+ 
+ 	<!-- Getting the context pacakage the controllers and codes are located. -->
+	<context:component-scan base-package="project.controller" />
+	
+ 	
+ 	<!--  Telling the database properties username/password etc has to be read from this properties 
+ 	<context:property-placeholder location="classpath:database.properties"/>
+ 	-->
+ 	
+ 	<!--  This is to mention that this is the annotation driven -->
+ 	<mvc:annotation-driven/>
+ 	
+ 	<!--  View Resolver. There are other view resolver, here we mention what we are using -->
+	<bean id="viewResolver"
+		class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+		<property name="prefix" value="/WEB-INF/jsp/" />
+		<property name="suffix" value=".jsp" />
+	</bean>
+	
+	
+	
+	<!-- Database Specifications . This is referenced from the .properties file -->
+	<bean class="org.springframework.jdbc.datasource.DriverManagerDataSource" id="dataSource">
+		<property name="driverClassName" value="com.mysql.jdbc.Driver"/>
+		<property name="url" value="jdbc:mysql://localhost:3306/videodb"/>
+		<property name="username" value="root"/>
+		<property name="password" value="12345"/>
+	</bean>
+	
+	<!-- Hibernate details -->
+	<bean class="org.springframework.orm.hibernate5.LocalSessionFactoryBean" id="sessionFactory">
+		<property name="dataSource" ref="dataSource"/>
+		<property name="hibernateProperties">
+			<props>
+				<prop key="hibernate.dialect">org.hibernate.dialect.MySQLDialect</prop>
+				<prop key="hibernate.show_sql">true</prop>
+				<prop key="hibernate.format_sql">true</prop>
+				<prop key="hibernate.default.schema">VideosDB</prop>
+			</props>
+		</property>
+		<property name="annotatedClasses">
+			<list>
+				<value>project.entity.Videos</value>
+			</list>
+		</property>
+		<property name="packagesToScan" value="project.entity"/>
+
+	</bean>
+<!-- Hibernate details -->
+
+	<bean class="org.springframework.orm.hibernate5.HibernateTransactionManager" id="transactionManager">
+		<property name="sessionFactory" ref="sessionFactory"/>
+	</bean>
+	
+	<!-- Mention that the Transactions are based on the Annotation. You can mention it as a xml driven -->
+	
+</beans>
